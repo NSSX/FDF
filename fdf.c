@@ -73,23 +73,26 @@ int main (int argc, char **argv)
 
   sizev = 0;
   i = 0;
-  line = "0 10 0 10 0 \n 10 10 10 0";
-  x = 200;
-  y = 200;/*
+  //  line = "0 10 0 10 0 \n 10 10 10 0 10 \n 0 0 0 0 0 \n 10 10 10 10 10";
+  line = "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 \n 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 \n 0 0 10 10 0 0 10 10 0 0 0 10 10 10 10 10 0 0 0 \n 0 0 10 10 0 0 10 10 0 0 0 0 0 0 0 10 10 0 0 \n 0 0 10 10 0 0 10 10 0 0 0 0 0 0 0 10 10 0 0 \n 0 0 10 10 10 10 10 10 0 0 0 0 10 10 10 10 0 0 0 \n 0 0 0 10 10 10 10 10 0 0 0 10 10 0 0 0 0 0 0 \n 0 0 0 0 0 0 10 10 0 0 0 10 10 0 0 0 0 0 0 \n 0 0 0 0 0 0 10 10 0 0 0 10 10 10 10 10 10 0 0 \n 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 \n 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
+  x = 80;
+  y = 120;/*
     if(argc != 2)
     {
       printf("error");
       return (0);
       }*/
+  //initialisation
   mlx = mlx_init();
-  win = mlx_new_window(mlx, 420, 420, "42"); 
+  //creation de la fenetre
+  win = mlx_new_window(mlx, 520, 520, "42"); 
  tab = ft_strsplit(line, ' ');
   while(tab[i])
     {
       if(tab[i][0] == '\n')
 	{
 	  y += 21;
-	  x = 200;
+	  x = 80;
 	  i++;
 	}
       if(ft_atoi(tab[i]) == 0)
@@ -104,23 +107,8 @@ int main (int argc, char **argv)
 	}
       i++;
       }
-  //0x00FFFF other color
-  /*  
-  while(line[i] != '\0')
-    {  
-      if(line[i] == '0')
-	{
-	  fill_rect_line(mlx, win, x, y, 20, 0xFF0000);
-	  x += 20;
-	}
-      if(line[i] == '\n')
-	{
-	  x = 200;
-	  y += 20;
-	}
-      i++;
-      }
-  */
+
+  //Boucle pour tenir la fenetre
   mlx_loop(mlx);
   return(0);
 }
