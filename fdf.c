@@ -5,6 +5,38 @@
 #define RECTX 10
 #define RECTY 10
 
+
+void draw_line(void *mlx, void *win, float x1, float y1, float x2, float y2, int color)
+{
+  float a;
+  float newx;
+  float newy;
+  float b;
+  int i;
+  int e;
+  float xfin;
+  float yfin;
+
+  xfin = x2;
+  yfin = y2;
+  e = 0;
+  i = 0;
+  while(e == 0)
+    {
+      newx = x1 + 0.5;
+      a = (y1 - y2) / (x1 - x2);
+      b = y2 - (a * x2) ;
+      newy = a * newx + b;
+      mlx_pixel_put(mlx, win, newx, newy, color);
+      if(newx == xfin)
+	e++;
+      y1 = newy;
+      x1+= 0.5;
+      i++;
+    }
+}
+
+
 void fill_rect(void *mlx, void *win, int x, int y, int color)
 { 
   int finaly;
@@ -14,17 +46,16 @@ void fill_rect(void *mlx, void *win, int x, int y, int color)
   depx = x;
   finaly = y + RECTX;
   finalx = x + RECTY;
-
-  while (y < finaly)
-    {
-      x = depx;
-      while (x < finalx)
+      while (y < finaly)
 	{
-	  mlx_pixel_put(mlx, win, x, y, color);
-	  x++;
+	  x = depx;
+	  while (x < finalx)
+	    {
+	      mlx_pixel_put(mlx, win, x, y, color);
+	      x++;
+	    }
+	  y++;
 	}
-      y++;
-    }
 }
 
 void fill_rect_line(void *mlx, void *win, int x, int y, int size,int color)
@@ -60,6 +91,13 @@ void fill_rect_line(void *mlx, void *win, int x, int y, int size,int color)
     }
 }
 
+int close_mlx(int keycode, void *param)
+{
+  if(keycode == 53)
+    exit(1);
+  return (0);
+}
+
 int main (int argc, char **argv)
 {
   void *mlx;
@@ -70,6 +108,7 @@ int main (int argc, char **argv)
   int i;
   char **tab;
   int sizev;
+  void **param;
 
   sizev = 0;
   i = 0;
@@ -85,8 +124,8 @@ int main (int argc, char **argv)
   //initialisation
   mlx = mlx_init();
   //creation de la fenetre
-  win = mlx_new_window(mlx, 520, 520, "42"); 
- tab = ft_strsplit(line, ' ');
+  win = mlx_new_window(mlx, 520, 520, "42");  
+  /*tab = ft_strsplit(line, ' ');
   while(tab[i])
     {
       if(tab[i][0] == '\n')
@@ -106,8 +145,9 @@ int main (int argc, char **argv)
 	  x += 21;
 	}
       i++;
-      }
-
+      }*/
+  draw_line(mlx, win, 60, 86, 245, 229, 0x00FFFF);
+  mlx_key_hook(win, close_mlx, 0);
   //Boucle pour tenir la fenetre
   mlx_loop(mlx);
   return(0);
