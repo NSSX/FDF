@@ -127,6 +127,23 @@ int close_mlx(int keycode, void *param)
   return (0);
 }
 
+void fill_iso_rect(void *mlx, void *win, int x, int y, int t,int color)
+{
+  draw_line(mlx, win, x, y, x + t, y - t, color);
+  draw_line(mlx, win, x + t, y - t, x + (t * 2), y, color);
+  draw_line(mlx, win, x+(t * 2), y, x + t, y + t, color);
+  draw_line(mlx, win, x + t, y + t, x, y, color);
+}
+
+void fill_3diso_rect(void *mlx, void *win, int x, int y, int t,int color)
+{
+  draw_line(mlx, win, x, y, x + t, y - (t *2), color);
+  draw_line(mlx, win, x + t, y - (t * 2), x + t * 2, (y - (t * 2)) + t, color);
+  draw_line(mlx, win, x + t * 2, (y - (t * 2)) + t, x + t, y + t, color);
+  draw_line(mlx, win, x + t, y + t, x, y, color);
+  
+}
+
 int main (int argc, char **argv)
 {
   void *mlx;
@@ -138,13 +155,17 @@ int main (int argc, char **argv)
   char **tab;
   int sizev;
   void **param;
-
+  int xdep;
+  int ydep;
   sizev = 0;
   i = 0;
   //  line = "0 10 0 10 0 \n 10 10 10 0 10 \n 0 0 0 0 0 \n 10 10 10 10 10";
   line = "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 \n 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 \n 0 0 10 10 0 0 10 10 0 0 0 10 10 10 10 10 0 0 0 \n 0 0 10 10 0 0 10 10 0 0 0 0 0 0 0 10 10 0 0 \n 0 0 10 10 0 0 10 10 0 0 0 0 0 0 0 10 10 0 0 \n 0 0 10 10 10 10 10 10 0 0 0 0 10 10 10 10 0 0 0 \n 0 0 0 10 10 10 10 10 0 0 0 10 10 0 0 0 0 0 0 \n 0 0 0 0 0 0 10 10 0 0 0 10 10 0 0 0 0 0 0 \n 0 0 0 0 0 0 10 10 0 0 0 10 10 10 10 10 10 0 0 \n 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 \n 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
-  x = 80;
-  y = 120;/*
+  x = 240;
+  y = 80;
+  xdep = x;
+  ydep = y;  
+/*
     if(argc != 2)
     {
       printf("error");
@@ -153,35 +174,77 @@ int main (int argc, char **argv)
   //initialisation
   mlx = mlx_init();
   //creation de la fenetre
-  win = mlx_new_window(mlx, 520, 520, "42");  
-  /*tab = ft_strsplit(line, ' ');
-  while(tab[i])
+  win = mlx_new_window(mlx, 700, 700, "42");  
+  tab = ft_strsplit(line, ' ');
+  /*while(tab[i])
     {
       if(tab[i][0] == '\n')
 	{
-	  y += 21;
-	  x = 80;
+	  x = xdep;
+	  y = ydep;
+	  x -= 20;
+	  y += 20;
+	  xdep = x;
+	  ydep = y;
 	  i++;
 	}
       if(ft_atoi(tab[i]) == 0)
 	{
-	  fill_rect_line(mlx, win, x, y, 20, 0x990099);
-	  x += 21;
+	 fill_iso_rect(mlx, win, x, y, 20, 0x00FFFF);
+	  x += 20;
+	  y+= 20;
 	}
       else if(ft_atoi(tab[i]) == 10)
 	{
-	  fill_rect_line(mlx, win, x, y, 20, 0x00FFFF);
-	  x += 21;
+	  fill_3diso_rect(mlx, win, x, y, 20, 0x9900FF);
+	  x += 20;
+	  y+= 20;
 	}
       i++;
       }*/
+  while(tab[i])
+    {
+      if(tab[i][0] == '\n')
+        {
+          x = xdep;
+          y = ydep;
+          x -= 20;
+          y += 20;
+          xdep = x;
+          ydep = y;
+          i++;
+        }
+      if(tab[i + 1])
+	{
+	  if(ft_atoi(tab[i + 1]) == 0 && ft_atoi(tab[i]) == 0)
+	    {
+	      draw_line(mlx, win, x, y, x + 20, y + 20, 0x00FFFF);
+	    }
 
-  // mlx_pixel_put(mlx, win, x, y, color);
-    draw_line(mlx, win, 200, 200, 200, 300, 0x00FFFF);
-    draw_line(mlx, win, 200, 200, 300, 200, 0x00FFFF);
-    draw_line(mlx, win, 300, 200, 300, 300, 0x00FFFF);
-    draw_line(mlx, win, 200, 300, 300, 300, 0x00FFFF);
-    mlx_key_hook(win, close_mlx, 0);
+	  if(ft_atoi(tab[i]) == 10 && ft_atoi(tab[i + 1]) == 10)
+	    {
+	        draw_line(mlx, win, x, y - 20, x + 20, y, 0x9900FF);
+	    }
+	}
+      if(tab[i + 20])
+	{
+	  if(ft_atoi(tab[i + 20]) == 0 && ft_atoi(tab[i]) == 0)
+	    {
+	      draw_line(mlx, win, x, y, x - 20, y + 20, 0x00FFFF);
+	    }
+	   else if(ft_atoi(tab[i + 20]) == 10 && ft_atoi(tab[i]) == 10)
+	     draw_line(mlx, win, x, y - 20, x - 20, y, 0x9900FF);
+	}
+      if(tab[i - 20])
+        {
+	  if(ft_atoi(tab[i - 20]) == 10 && ft_atoi(tab[i]) == 0)
+	    draw_line(mlx, win, x, y, x + 20,y - 40, 0x9900FF);
+        }
+      x += 20;
+      y+= 20;
+      i++;
+    }
+  mlx_key_hook(win, close_mlx, 0);
   //Boucle pour tenir la fenetre
   mlx_loop(mlx);
   return(0);
