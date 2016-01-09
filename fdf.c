@@ -220,11 +220,14 @@ int main (int argc, char **argv)
 	    {
 	      draw_line(mlx, win, x, y, x + 20, y + 20, 0x00FFFF);
 	    }
-
 	  if(ft_atoi(tab[i]) == 10 && ft_atoi(tab[i + 1]) == 10)
 	    {
 	        draw_line(mlx, win, x, y - 20, x + 20, y, 0x9900FF);
 	    }
+	  if(ft_atoi(tab[i + 1]) == 10 && ft_atoi(tab[i]) == 0)
+            {
+              draw_line(mlx, win, x, y, x + 20, y, 0x9900FF);
+            }
 	}
       if(tab[i + 20])
 	{
