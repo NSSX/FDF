@@ -228,6 +228,8 @@ int main (int argc, char **argv)
             {
               draw_line(mlx, win, x, y, x + 20, y, 0x9900FF);
             }
+	  if(ft_atoi(tab[i + 1]) == 0 && ft_atoi(tab[i]) == 10)
+            draw_line(mlx, win, x, y - 20, x + 20, y + 20, 0x9900FF);
 	}
       if(tab[i + 20])
 	{
@@ -235,13 +237,17 @@ int main (int argc, char **argv)
 	    {
 	      draw_line(mlx, win, x, y, x - 20, y + 20, 0x00FFFF);
 	    }
-	   else if(ft_atoi(tab[i + 20]) == 10 && ft_atoi(tab[i]) == 10)
-	     draw_line(mlx, win, x, y - 20, x - 20, y, 0x9900FF);
+	  if(ft_atoi(tab[i + 20]) == 10 && ft_atoi(tab[i]) == 10)
+	    draw_line(mlx, win, x, y - 20, x - 20, y, 0x9900FF);
+	  if(ft_atoi(tab[i + 20]) == 10 && ft_atoi(tab[i]) == 0)
+	    draw_line(mlx, win, x, y, x - 20, y, 0x9900FF);
 	}
-      if(tab[i - 20])
+      if(tab[i - 20] && tab[i + 1] && tab[i - 19])
         {
 	  if(ft_atoi(tab[i - 20]) == 10 && ft_atoi(tab[i]) == 0)
 	    draw_line(mlx, win, x, y, x + 20,y - 40, 0x9900FF);
+	  //if(ft_atoi(tab[i - 20]) == 0 && ft_atoi(tab[i + 1]) == 0 && ft_atoi(tab[i]) == 0 && ft_atoi(tab[i - 19]) == 10)
+	    // draw_line(mlx, win, x, y, x + 40, y - 20, 0x9900FF);
         }
       x += 20;
       y+= 20;
