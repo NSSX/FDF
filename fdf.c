@@ -16,24 +16,53 @@ void draw_line(void *mlx, void *win, float x1, float y1, float x2, float y2, int
   int e;
   float xfin;
   float yfin;
+  int temp;
 
+  temp = 0;
+    if(x2 < x1)
+    {
+      temp = x1;
+      x1 = x2;
+      x2 = temp;
+      temp = y1;
+      y1 = y2;
+      y2 = temp;
+      }
   xfin = x2;
   yfin = y2;
   e = 0;
   i = 0;
-  while(e == 0)
+  if(x1 != x2)
     {
-      newx = x1 + 0.5;
-      a = (y1 - y2) / (x1 - x2);
-      b = y2 - (a * x2) ;
-      newy = a * newx + b;
-      mlx_pixel_put(mlx, win, newx, newy, color);
-      if(newx == xfin)
-	e++;
-      y1 = newy;
-      x1+= 0.5;
-      i++;
+      while(e == 0)
+	{
+	  newx = x1 + 0.5;
+	  a = (y1 - y2) / (x1 - x2);
+	  b = y2 - (a * x2) ;
+	  newy = a * newx + b;
+	  mlx_pixel_put(mlx, win, newx, newy, color);
+	  if(newx == xfin && newy == yfin)
+	    e++;
+	  y1 = newy;
+	  x1+= 0.5;
+	}
     }
+  else
+    {
+      while(e == 0)
+        {
+          newy = y1 + 0.5;
+          a = (x1 - x2) / (y1 - y2);
+          b = x2 - (a * y2) ;
+          newx = a * newy + b;
+          mlx_pixel_put(mlx, win, newx, newy, color);
+          if(newx == xfin && newy == yfin)
+            e++;
+          x1 = newx;
+          y1+= 0.5;
+        }
+    }
+
 }
 
 
@@ -146,8 +175,13 @@ int main (int argc, char **argv)
 	}
       i++;
       }*/
-  draw_line(mlx, win, 60, 86, 245, 229, 0x00FFFF);
-  mlx_key_hook(win, close_mlx, 0);
+
+  // mlx_pixel_put(mlx, win, x, y, color);
+    draw_line(mlx, win, 200, 200, 200, 300, 0x00FFFF);
+    draw_line(mlx, win, 200, 200, 300, 200, 0x00FFFF);
+    draw_line(mlx, win, 300, 200, 300, 300, 0x00FFFF);
+    draw_line(mlx, win, 200, 300, 300, 300, 0x00FFFF);
+    mlx_key_hook(win, close_mlx, 0);
   //Boucle pour tenir la fenetre
   mlx_loop(mlx);
   return(0);
