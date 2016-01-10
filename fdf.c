@@ -1,10 +1,15 @@
+#include "get_next_line.h"
 #include "mlx.h"
 #include <stdio.h>
 #include "libft/libft.h"
 //Const fill_rect
 #define RECTX 10
 #define RECTY 10
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 void draw_line(void *mlx, void *win, float x1, float y1, float x2, float y2, int color)
 {
@@ -94,7 +99,7 @@ void fill_rect_line(void *mlx, void *win, int x, int y, int size,int color)
   int i;
   int sizex;
   int sizey;
-
+  
   sizex = x + size;
   sizey = y + size;
   i = depx;
@@ -157,100 +162,84 @@ int main (int argc, char **argv)
   void **param;
   int xdep;
   int ydep;
+  int fd;
+  char *yt;
+  int u;
+  int v;
+
+
+  v = 15;
+  line = (char *)malloc(sizeof(char) * 2);
   sizev = 0;
   i = 0;
-  //  line = "0 10 0 10 0 \n 10 10 10 0 10 \n 0 0 0 0 0 \n 10 10 10 10 10";
-  line = "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 \n 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 \n 0 0 10 10 0 0 10 10 0 0 0 10 10 10 10 10 0 0 0 \n 0 0 10 10 0 0 10 10 0 0 0 0 0 0 0 10 10 0 0 \n 0 0 10 10 0 0 10 10 0 0 0 0 0 0 0 10 10 0 0 \n 0 0 10 10 10 10 10 10 0 0 0 0 10 10 10 10 0 0 0 \n 0 0 0 10 10 10 10 10 0 0 0 10 10 0 0 0 0 0 0 \n 0 0 0 0 0 0 10 10 0 0 0 10 10 0 0 0 0 0 0 \n 0 0 0 0 0 0 10 10 0 0 0 10 10 10 10 10 10 0 0 \n 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 \n 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
-  x = 240;
-  y = 80;
+  //line = "0 10 10 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 \n 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 \n 0 0 10 10 0 0 10 10 0 0 0 10 10 10 10 10 0 0 0 \n 0 0 10 10 0 0 10 10 0 0 0 0 0 0 0 10 10 0 0 \n 0 0 10 10 0 0 10 10 0 0 0 0 0 0 0 10 10 0 0 \n 0 0 10 10 10 10 10 10 0 0 0 0 10 10 10 10 0 0 0 \n 0 0 0 10 10 10 10 10 0 0 0 10 10 0 0 0 0 0 0 \n 0 0 0 0 0 0 10 10 0 0 0 10 10 0 0 0 0 0 0 \n 0 0 0 0 0 0 10 10 0 0 0 10 10 10 10 10 10 0 0 \n 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 \n 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
+  x = 300;
+  y = 60;
   xdep = x;
   ydep = y;  
-/*
     if(argc != 2)
+      {
+	printf("error");
+	return (0);
+      }
+  fd = open(argv[1], O_RDONLY);
+  while(get_next_line(fd,&yt))
     {
-      printf("error");
-      return (0);
-      }*/
+     line = ft_strjoin(line,yt);
+     line = ft_strjoin(line," \n ");
+    }
   //initialisation
   mlx = mlx_init();
   //creation de la fenetre
-  win = mlx_new_window(mlx, 700, 700, "42");  
+  win = mlx_new_window(mlx, 900, 900, "42");  
   tab = ft_strsplit(line, ' ');
-  /*while(tab[i])
-    {
-      if(tab[i][0] == '\n')
-	{
-	  x = xdep;
-	  y = ydep;
-	  x -= 20;
-	  y += 20;
-	  xdep = x;
-	  ydep = y;
-	  i++;
-	}
-      if(ft_atoi(tab[i]) == 0)
-	{
-	 fill_iso_rect(mlx, win, x, y, 20, 0x00FFFF);
-	  x += 20;
-	  y+= 20;
-	}
-      else if(ft_atoi(tab[i]) == 10)
-	{
-	  fill_3diso_rect(mlx, win, x, y, 20, 0x9900FF);
-	  x += 20;
-	  y+= 20;
-	}
-      i++;
-      }*/
-  while(tab[i])
+    while(tab[i])
     {
       if(tab[i][0] == '\n')
         {
-          x = xdep;
-          y = ydep;
-          x -= 20;
-          y += 20;
-          xdep = x;
-          ydep = y;
+	  x = xdep;
+	  y = ydep;
+          x -= (v * 2);
+          y += (v * 2);
+	  xdep = x;
+	  ydep = y; 
           i++;
         }
       if(tab[i + 1])
 	{
 	  if(ft_atoi(tab[i + 1]) == 0 && ft_atoi(tab[i]) == 0)
 	    {
-	      draw_line(mlx, win, x, y, x + 20, y + 20, 0x00FFFF);
+	      draw_line(mlx, win, x, y, x + (v * 2), y + (v * 2), 0x00FFFF);
 	    }
 	  if(ft_atoi(tab[i]) == 10 && ft_atoi(tab[i + 1]) == 10)
 	    {
-	        draw_line(mlx, win, x, y - 20, x + 20, y, 0x9900FF);
+	      draw_line(mlx, win, x, y - (v * 2), x + (v * 2), y, 0xCC3300);
 	    }
 	  if(ft_atoi(tab[i + 1]) == 10 && ft_atoi(tab[i]) == 0)
             {
-              draw_line(mlx, win, x, y, x + 20, y, 0x9900FF);
+              draw_line(mlx, win, x, y, x + (v * 2), y, 0x9900FF);
             }
 	  if(ft_atoi(tab[i + 1]) == 0 && ft_atoi(tab[i]) == 10)
-            draw_line(mlx, win, x, y - 20, x + 20, y + 20, 0x9900FF);
+            draw_line(mlx, win, x, y - (v * 2), x + (v * 2), y + (v * 2), 0x9900FF);
 	}
       if(tab[i + 20])
 	{
 	  if(ft_atoi(tab[i + 20]) == 0 && ft_atoi(tab[i]) == 0)
 	    {
-	      draw_line(mlx, win, x, y, x - 20, y + 20, 0x00FFFF);
+	      draw_line(mlx, win, x, y, x - (v * 2), y + (v * 2), 0x00FFFF);
 	    }
 	  if(ft_atoi(tab[i + 20]) == 10 && ft_atoi(tab[i]) == 10)
-	    draw_line(mlx, win, x, y - 20, x - 20, y, 0x9900FF);
+	    draw_line(mlx, win, x, y - (v * 2), x - (v * 2), y, 0xCC3300);
 	  if(ft_atoi(tab[i + 20]) == 10 && ft_atoi(tab[i]) == 0)
-	    draw_line(mlx, win, x, y, x - 20, y, 0x9900FF);
+	    draw_line(mlx, win, x, y, x - (v * 2), y, 0x9900FF);
 	}
-      if(tab[i - 20] && tab[i + 1] && tab[i - 19])
+      if(tab[i - 20])
         {
 	  if(ft_atoi(tab[i - 20]) == 10 && ft_atoi(tab[i]) == 0)
-	    draw_line(mlx, win, x, y, x + 20,y - 40, 0x9900FF);
-	  //if(ft_atoi(tab[i - 20]) == 0 && ft_atoi(tab[i + 1]) == 0 && ft_atoi(tab[i]) == 0 && ft_atoi(tab[i - 19]) == 10)
-	    // draw_line(mlx, win, x, y, x + 40, y - 20, 0x9900FF);
+	    draw_line(mlx, win, x, y, x + (v * 2),y - (v * 4), 0x9900FF);
         }
-      x += 20;
-      y+= 20;
+      x += (v * 2);
+      y+= (v * 2);
       i++;
     }
   mlx_key_hook(win, close_mlx, 0);
